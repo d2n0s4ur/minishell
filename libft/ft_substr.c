@@ -3,39 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: dongjlee <dongjlee@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/07 21:41:03 by jnoh              #+#    #+#             */
-/*   Updated: 2022/03/09 21:19:20 by jnoh             ###   ########.fr       */
+/*   Created: 2022/03/08 23:40:52 by dongjlee          #+#    #+#             */
+/*   Updated: 2023/01/03 01:45:35 by dongjlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <unistd.h>
+#include <stdlib.h>
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char			*ret;
-	unsigned int	i;
+	char				*ret;
+	unsigned int		i;
+	unsigned int		j;
 
-	if (!s)
-		return (0);
-	if (start >= ft_strlen(s))
-	{
-		ret = ft_strdup("");
-		return (ret);
-	}
-	if (ft_strlen(s + start) < len)
-		ret = (char *)malloc((ft_strlen(s + start) + 1) * sizeof(char));
-	else
-		ret = (char *)malloc((len + 1) * sizeof(char));
-	if (!ret)
-		return (0);
 	i = 0;
-	while (s[start + i] && i < len)
+	j = 0;
+	if (s == 0)
+		return (0);
+	ret = (char *)malloc(sizeof(char) * (len + 1));
+	if (ret == 0)
+		return (0);
+	while (s[i] != '\0')
 	{
-		ret[i] = s[start + i];
+		if (start <= i && len > j)
+		{
+			ret[j] = s[i];
+			j++;
+		}
 		i++;
 	}
-	ret[i] = 0;
+	ret[j] = '\0';
 	return (ret);
 }

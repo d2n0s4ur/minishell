@@ -1,19 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_free_matrix.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: dongjlee <dongjlee@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 23:43:30 by jnoh              #+#    #+#             */
-/*   Updated: 2022/12/27 23:43:49 by jnoh             ###   ########.fr       */
+/*   Created: 2022/12/29 17:21:06 by dongjlee          #+#    #+#             */
+/*   Updated: 2023/01/02 01:24:34 by dongjlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+void	ft_free_matrix(char ***martix)
 {
-    ft_pwd();
-    return (0);
+	int	i;
+
+	i = 0;
+	while (martix && martix[0] && martix[0][i])
+	{
+		free(martix[0][i]);
+		i++;
+	}
+	if (martix)
+	{
+		free(martix[0]);
+		*martix = NULL;
+	}
 }

@@ -1,34 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   ft_strchr_i.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: dongjlee <dongjlee@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/09 12:28:16 by jnoh              #+#    #+#             */
-/*   Updated: 2022/03/15 14:12:58 by jnoh             ###   ########.fr       */
+/*   Created: 2022/12/29 17:32:06 by dongjlee          #+#    #+#             */
+/*   Updated: 2022/12/29 17:32:07 by dongjlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+int	ft_strchr_i(const char *s, int c)
 {
-	t_list	*tmp;
+	unsigned char	c_unsigned;
+	int				i;
 
-	if (!lst || !new)
-		return ;
-	if (!(*lst))
+	i = 0;
+	if (!s)
+		return (-1);
+	c_unsigned = (unsigned char)c;
+	while (s[i] != '\0')
 	{
-		*lst = new;
-		return ;
+		if (s[i] == c_unsigned)
+			return (i);
+		i++;
 	}
-	tmp = *lst;
-	while (tmp)
-	{
-		if (!(tmp->next))
-			break ;
-		tmp = tmp->next;
-	}
-	tmp->next = new;
+	if (c_unsigned == '\0')
+		return (i);
+	return (-1);
 }

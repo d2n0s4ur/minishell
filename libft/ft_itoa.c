@@ -3,58 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: dongjlee <dongjlee@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/08 23:10:48 by jnoh              #+#    #+#             */
-/*   Updated: 2022/03/13 20:33:09 by jnoh             ###   ########.fr       */
+/*   Created: 2022/03/09 09:32:49 by dongjlee          #+#    #+#             */
+/*   Updated: 2022/12/29 17:45:12 by dongjlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static size_t	ft_get_nb_len(int n)
+void	ft_set_before_add(char before_arr[15], int n)
 {
-	size_t	len;
+	int	pos;
 
-	len = 0;
-	if (n <= 0)
+	pos = 0;
+	while (n / 10 != 0)
 	{
-		n = n * (-1);
-		len++;
-	}
-	while (n > 0)
-	{
+		before_arr[pos++] = '0' + n % 10;
 		n = n / 10;
-		len++;
 	}
-	return (len);
+	before_arr[pos++] = '0' + n % 10;
+	before_arr[pos] = '\0';
+}
+
+void	ft_check_minus(int *n, unsigned int *is_minus)
+{
+	if (*n < 0)
+	{
+		*n *= -1;
+		*is_minus = 1;
+	}
 }
 
 char	*ft_itoa(int n)
 {
-	size_t	len;
-	char	*ret;
-	size_t	i;
+	char				before_arr[15];
+	char				arr[15];
+	unsigned int		pos;
+	unsigned int		is_minus;
 
+	is_minus = 0;
 	if (n == -2147483648)
 		return (ft_strdup("-2147483648"));
-	len = ft_get_nb_len(n);
-	ret = (char *)malloc((len + 1) * sizeof(char));
-	if (!ret)
-		return (0);
-	if (n < 0)
-	{
-		ret[0] = '-';
-		n = n * (-1);
-	}
 	if (n == 0)
-		ret[0] = '0';
-	i = len - 1;
-	while (n > 0)
+		return (ft_strdup("0"));
+	ft_check_minus(&n, &is_minus);
+	ft_set_before_add(before_arr, n);
+	pos = 0;
+	if (is_minus == 1)
+		arr[pos++] = '-';
+	while (pos - is_minus < ft_strlen(before_arr))
 	{
-		ret[i--] = (n % 10) + '0';
-		n = n / 10;
+		arr[pos] = before_arr[ft_strlen(before_arr) - pos - 1 + is_minus];
+		pos++;
 	}
-	ret[len] = 0;
-	return (ret);
+	arr[pos] = '\0';
+	return (ft_strdup(arr));
 }

@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_matrixlen.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: dongjlee <dongjlee@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/09 11:54:46 by jnoh              #+#    #+#             */
-/*   Updated: 2022/03/15 14:13:33 by jnoh             ###   ########.fr       */
+/*   Created: 2022/12/29 17:36:26 by dongjlee          #+#    #+#             */
+/*   Updated: 2023/01/02 01:25:01 by dongjlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstnew(void *content)
+int	ft_matrixlen(char **matrix)
 {
-	t_list	*ret;
+	int	count;
 
-	ret = (t_list *)malloc(sizeof(t_list));
-	if (!ret)
-		return (0);
-	ret->content = content;
-	ret->next = 0;
-	return (ret);
+	count = 0;
+	while (matrix && matrix[count])
+	{
+		count++;
+	}
+	return (count);
 }

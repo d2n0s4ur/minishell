@@ -1,21 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_is_all_digit.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: dongjlee <dongjlee@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/09 12:52:15 by jnoh              #+#    #+#             */
-/*   Updated: 2022/03/15 14:13:13 by jnoh             ###   ########.fr       */
+/*   Created: 2023/01/03 18:03:58 by dongjlee          #+#    #+#             */
+/*   Updated: 2023/01/03 18:05:44 by dongjlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstdelone(t_list *lst, void (*del)(void *))
+int	ft_is_all_digit(char *argv)
 {
-	if (!lst || !del)
-		return ;
-	del(lst->content);
-	free(lst);
+	int	i;
+
+	i = 0;
+	while (argv[i])
+	{
+		if (!ft_isdigit(argv[i]))
+		{
+			return (0);
+		}
+		i++;
+	}
+	return (1);
 }

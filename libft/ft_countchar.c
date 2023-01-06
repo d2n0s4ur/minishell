@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   ft_countchar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: dongjlee <dongjlee@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/09 12:15:01 by jnoh              #+#    #+#             */
-/*   Updated: 2022/03/15 14:13:37 by jnoh             ###   ########.fr       */
+/*   Created: 2022/12/29 17:25:56 by dongjlee          #+#    #+#             */
+/*   Updated: 2022/12/29 17:25:59 by dongjlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_lstsize(t_list *lst)
+int	ft_countchar(char *s, char c)
 {
-	int		size;
-	t_list	*tmp;
+	int	count;
 
-	size = 0;
-	if (!lst)
+	if (!s)
 		return (0);
-	tmp = lst;
-	while (tmp)
+	count = 0;
+	while (*s)
 	{
-		size++;
-		tmp = tmp->next;
+		if (*s == c)
+			count++;
+		s++;
 	}
-	return (size);
+	return (count);
 }

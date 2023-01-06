@@ -3,56 +3,96 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: dongjlee <dongjlee@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/09 11:31:56 by jnoh              #+#    #+#             */
-/*   Updated: 2022/04/15 18:55:37 by jnoh             ###   ########.fr       */
+/*   Created: 2022/03/09 10:23:03 by dongjlee          #+#    #+#             */
+/*   Updated: 2022/07/09 14:43:25 by dongjlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <unistd.h>
 
-static void	ft_put_pos_num(int nb, int fd)
+unsigned int	get_exp(unsigned int ori_num)
 {
-	char	c[12];
-	int		index;
+	int	exp;
+	int	num_size;
 
-	index = 0;
-	c[0] = 0;
-	while (nb > 0)
+	exp = 1;
+	num_size = 1;
+	while (ori_num >= 10)
 	{
-		c[index] = nb % 10 + '0';
-		nb = nb / 10;
-		index++;
+		ori_num /= 10;
+		num_size++;
+		exp *= 10;
 	}
-	while (index > 0)
+	return (exp);
+}
+
+void	put_text(unsigned int num, int num_size, int flag, int fd)
+{
+	char	result[15];
+	int		i;
+	int		minus;
+	int		exp;
+
+	i = 0;
+	minus = '-';
+	exp = get_exp(num);
+	while (i < num_size)
 	{
-		write(fd, &c[index - 1], 1);
-		index--;
+		result[i] = num / exp + '0';
+		num = num % exp;
+		exp /= 10;
+		i++;
 	}
+	i = 0;
+	if (flag == 1)
+	{
+		write(fd, &minus, 1);
+	}
+	while (i < num_size)
+	{
+		write(fd, &result[i], 1);
+		i++;
+	}
+}
+
+unsigned int	get_num_size_fd(unsigned int ori_num)
+{
+	int	exp;
+	int	num_size;
+
+	exp = 1;
+	num_size = 1;
+	while (ori_num >= 10)
+	{
+		ori_num /= 10;
+		num_size++;
+		exp *= 10;
+	}
+	exp--;
+	return (num_size);
 }
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	char	minus;
-	char	zero;
+	unsigned int	new_nb;
+	int				flag;
 
-	zero = '0';
-	minus = '-';
 	if (n == -2147483648)
 	{
-		write(fd, "-2147483648", 11);
-		return ;
+		new_nb = 2147483648;
+		flag = 1;
 	}
-	if (n == 0)
+	else if (n < 0)
 	{
-		write(fd, &zero, 1);
-		return ;
+		new_nb = n * -1;
+		flag = 1;
 	}
-	if (n < 0)
-	{
-		write(fd, &minus, 1);
-		n = n * (-1);
+	else
+	{		
+		new_nb = n;
+		flag = 0;
 	}
-	ft_put_pos_num(n, fd);
+	put_text(new_nb, get_num_size_fd(new_nb), flag, fd);
 }

@@ -5,47 +5,43 @@
 #                                                     +:+ +:+         +:+      #
 #    By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/08/12 14:17:56 by jnoh              #+#    #+#              #
-#    Updated: 2022/12/27 23:45:00 by jnoh             ###   ########.fr        #
+#    Created: 2022/12/29 17:13:55 by dongjlee          #+#    #+#              #
+#    Updated: 2023/01/03 20:51:03 by jnoh             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC		= 	cc
-CFLAGS	= 	-Wall -Werror -Wextra -I ./include
-SRCS	= 	./srcs/builtin/pwd.c \
-			./srcs/minishell.c
-HEADERS	=	./include/minishell.h ./libft/libft.h
-OBJS	= 	$(SRCS:.c=.o)
-LIBFT	= 	libft/libft.a
-NAME	= 	minishell
-RM 		= 	rm -f
+NAME	=	minishell
+RM		=	rm -f
+CC		=	cc
+CFLAGS	=	-Wall -Wextra -Werror
+SRCS = main.c builtins.c ft_strtrim_all.c exec.c					\
+	  fill_node.c get_redirect.c ft_cmdtrim.c env_util.c			\
+	  expand.c heredoc.c error.c env.c custom_cmd.c	error_util.c	\
+	  prompt.c ft_cmdsubsplit.c signal.c parse_args.c get_cmd.c		\
+	  get_redirect_utils.c
 
-define libft_call
-		cd libft && $(MAKE) $(1) && cd ..
-endef
+COMFILE_FLAGS = -lreadline -L/usr/local/opt/readline/lib
+OBJS	=	$(SRCS:.c=.o)
 
 $(NAME) : $(OBJS)
-			$(call libft_call, all)
-			$(CC) -o $(NAME) $(CFLAGS) $(OBJS) -L ./libft -lft
+	$(MAKE) -C ./libft
+	cp libft/libft.a libft.a
+	$(CC) -L /usr/local/opt/readline/lib -I /usr/local/opt/readline/include -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include $(CFLAGS) $(OBJS) -L. -lft -lreadline -o $(NAME)
 
 all	: $(NAME)
 
-clean:
-	cd libft && make clean && cd ..
+%.o: %.c
+	$(CC) -I ~/.brew/opt/readline/include -I /usr/local/opt/readline/include $(CFLAGS) -c $< -o $@
+
+clean :
+	$(MAKE) clean -C ./libft
 	$(RM) $(OBJS)
 
-fclean:
-	cd libft && make fclean && cd ..
-	$(RM) $(OBJS)
+fclean	: clean
+	$(MAKE) fclean -C ./libft
 	$(RM) $(NAME)
+	$(RM) libft.a
 
-re:
-	$(MAKE) fclean
-	$(MAKE) all
-
-norm: norminette
-
-norminette:
-	norminette
+re : fclean all
 
 .PHONY : all clean fclean re

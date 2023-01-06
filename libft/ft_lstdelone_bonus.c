@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_lstdelone_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: dongjlee <dongjlee@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 23:34:14 by jnoh              #+#    #+#             */
-/*   Updated: 2022/12/27 23:46:50 by jnoh             ###   ########.fr       */
+/*   Created: 2022/03/09 12:05:55 by dongjlee          #+#    #+#             */
+/*   Updated: 2022/03/13 18:35:58 by dongjlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
+#include <stdlib.h>
 
-void	ft_pwd(void)
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
-	char	*buf;
-	size_t	size;
-
-	buf = 0;
-	size = 0;
-	buf = getcwd(0, size);
-	ft_putstr_fd(buf, 1);
-	free(buf);
+	if (lst == 0 || del == 0)
+		return ;
+	del(lst->content);
+	free(lst);
 }

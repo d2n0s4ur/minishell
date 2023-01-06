@@ -3,113 +3,92 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: dongjlee <dongjlee@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/08 22:05:04 by jnoh              #+#    #+#             */
-/*   Updated: 2022/04/16 16:05:29 by jnoh             ###   ########.fr       */
+/*   Created: 2022/03/09 09:02:51 by dongjlee          #+#    #+#             */
+/*   Updated: 2022/10/31 14:57:47 by dongjlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
-static int	ft_free_element(char **arr)
+int	ft_is_seprate(const char str, char c)
 {
-	size_t	i;
-
-	i = 0;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
+	if (str == c || str == '\0')
+		return (1);
 	return (0);
 }
 
-static char	*ft_strndup(char const *str, size_t	len)
+int	get_word_count(const char *str, char c)
 {
-	char	*ret;
-
-	ret = (char *)malloc((len + 1) * sizeof(char));
-	if (!ret)
-		return (0);
-	ft_memcpy(ret, str, len);
-	ret[len] = 0;
-	return (ret);
-}
-
-static int	ft_do_split(char **ret, char const *str, char c)
-{
-	size_t	i;
-	size_t	index;
-	size_t	len;
+	int	i;
+	int	count;
 
 	i = 0;
-	index = 0;
-	while (str[i])
+	count = 0;
+	while (str[i] != '\0')
 	{
-		if (str[i] != c)
+		if (ft_is_seprate(str[i], c) == 0
+			&& (ft_is_seprate(str[i + 1], c) == 1 || str[i + 1] == '\0'))
 		{
-			len = 0;
-			while (str[i + len] != c && str[i + len])
-				len++;
-			ret[index] = ft_strndup(str + i, len);
-			if (!ret[index])
-				return (ft_free_element(ret));
-			index++;
-			i = i + len;
+			count++;
 		}
-		else
-			i++;
-	}
-	ret[index] = 0;
-	return (1);
-}
-
-static size_t	ft_get_split_size(char const *str, char c)
-{
-	size_t	size;
-	size_t	i;
-	int		flag;
-
-	flag = 1;
-	i = 0;
-	size = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-		{
-			if (flag == 0)
-				size++;
-			flag = 1;
-		}
-		else
-			flag = 0;
 		i++;
 	}
-	if (flag == 0)
-		size++;
-	return (size);
+	return (count);
 }
 
-char	**ft_split(char const *str, char c)
+char	*ft_strdup_(const char *str, char c, int *start_point)
 {
-	char	**ret;
-	size_t	size;
+	char	*tmp_arr;
+	int		i;
+	int		j;
 
-	if (!str)
+	i = *start_point;
+	while (str[i] != '\0')
 	{
-		ret = (char **)malloc(1 * sizeof(char *));
-		if (!ret)
-			return (0);
-		ret[0] = (char *)(0);
-		return (ret);
+		if (ft_is_seprate(str[i], c) == 0 && ft_is_seprate(str[i + 1], c) == 1)
+		{
+			i++;
+			break ;
+		}
+		i++;
 	}
-	size = ft_get_split_size(str, c);
-	ret = (char **)malloc((size + 1) * sizeof(char *));
-	if (ret == 0)
+	tmp_arr = malloc(sizeof(char) * (i - *start_point) + 1);
+	if (tmp_arr == 0)
+		exit(1);
+	j = 0;
+	while (*start_point < i)
+	{
+		tmp_arr[j++] = str[*start_point];
+		*start_point += 1;
+	}
+	tmp_arr[j] = '\0';
+	return (tmp_arr);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	int		i;
+	int		start_point;
+	char	**arr;
+
+	if (s == 0)
 		return (0);
-	if (!ft_do_split(ret, str, c))
+	start_point = 0;
+	arr = malloc(sizeof(char *) * (get_word_count(s, c) + 1));
+	if (arr == 0)
 		return (0);
-	return (ret);
+	i = 0;
+	while (i < get_word_count(s, c))
+	{
+		while (ft_is_seprate(s[start_point], c) == 1)
+		{
+			start_point++;
+		}
+		arr[i] = ft_strdup_(s, c, &start_point);
+		i++;
+	}
+	arr[i] = 0;
+	return (arr);
 }

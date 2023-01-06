@@ -3,39 +3,87 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: dongjlee <dongjlee@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/08 09:46:33 by jnoh              #+#    #+#             */
-/*   Updated: 2022/03/08 22:04:28 by jnoh             ###   ########.fr       */
+/*   Created: 2022/03/09 00:10:40 by dongjlee          #+#    #+#             */
+/*   Updated: 2022/12/29 17:44:10 by dongjlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strtrim(char const *s1, char const *set)
+int	is_in_set(char *set, char target)
 {
-	size_t	start;
-	size_t	end;
-	char	*ret;
+	int	i;
 
-	if (!s1)
+	i = 0;
+	while (set[i] != '\0')
 	{
-		ret = (char *)malloc(1 * sizeof(char));
-		if (!ret)
-			return (0);
-		ret[0] = 0;
-		return (ret);
+		if (set[i] == target)
+		{
+			return (1);
+		}
+		i++;
 	}
-	start = 0;
-	while (ft_strchr(set, s1[start]) && s1[start])
-		start++;
-	end = ft_strlen(s1);
-	while (end > start && ft_strchr(set, s1[end - 1]) && s1[end - 1])
-		end--;
-	ret = (char *)malloc((end - start + 1) * sizeof(char));
-	if (!ret)
+	return (0);
+}
+
+int	get_count_before(char *s1, char *set)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (s1[i] != '\0')
+	{
+		if (is_in_set(set, s1[i]) == 1)
+		{
+			count++;
+		}
+		else
+		{
+			return (count);
+		}
+		i++;
+	}
+	return (count);
+}
+
+int	get_count_after(char *s1, char *set)
+{
+	int	i;
+	int	count;
+
+	i = ft_strlen(s1) - 1;
+	count = 0;
+	while (i >= 0)
+	{
+		if (is_in_set(set, s1[i]) == 1)
+		{
+			count++;
+		}
+		else
+		{
+			return (count);
+		}
+		i--;
+	}
+	return (count);
+}
+
+char	*ft_strtrim(char *s1, char *set)
+{
+	unsigned int		before;
+	unsigned int		after;
+
+	if (s1 == 0 || set == 0)
 		return (0);
-	ft_memcpy(ret, s1 + start, (size_t)(end - start));
-	ret[end - start] = 0;
-	return (ret);
+	before = get_count_before(s1, set);
+	after = get_count_after(s1, set);
+	if (ft_strlen(s1) == before && ft_strlen(s1) == after)
+	{
+		return (ft_strdup(""));
+	}
+	return (ft_substr(s1, before, ft_strlen(s1) - after - before));
 }

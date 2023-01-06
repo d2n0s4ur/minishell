@@ -3,37 +3,74 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: dongjlee <dongjlee@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/07 18:34:42 by jnoh              #+#    #+#             */
-/*   Updated: 2022/04/11 19:39:09 by jnoh             ###   ########.fr       */
+/*   Created: 2022/03/07 16:29:10 by dongjlee          #+#    #+#             */
+/*   Updated: 2022/03/13 18:34:06 by dongjlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <unistd.h>
+
+int	get_size(const char *str)
+{
+	int	str_size;
+
+	str_size = 0;
+	while (*(str + str_size) != '\0')
+	{
+		str_size++;
+	}
+	return (str_size);
+}
+
+char	*do_find(const char *str \
+				, const char *to_find \
+				, size_t str_pos)
+{
+	size_t			to_find_pos;
+	int				flag;
+
+	flag = 1;
+	to_find_pos = 0;
+	while ((*(to_find + to_find_pos) != '\0'))
+	{
+		if (*(str + str_pos + to_find_pos) != *(to_find + to_find_pos))
+		{
+			flag = 0;
+			to_find_pos++;
+			break ;
+		}
+		to_find_pos++;
+	}
+	if (flag == 1)
+	{
+		return ((char *)str + str_pos);
+	}
+	return (0);
+}
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	size_t	i;
-	size_t	j;
-	size_t	offset;
+	size_t		str_size;
+	int			to_find_size;
+	size_t		str_pos;
+	char		*find_return;
 
-	if (ft_strlen(needle) == 0)
+	str_size = 0;
+	str_pos = 0;
+	str_size = get_size(haystack);
+	to_find_size = get_size(needle);
+	if (to_find_size == 0)
 		return ((char *)haystack);
-	i = 0;
-	while (haystack[i] != '\0' && i < len)
+	while (str_pos < str_size && (str_pos + to_find_size) <= len)
 	{
-		if (haystack[i] == needle[0])
+		find_return = do_find(haystack, needle, str_pos);
+		str_pos++;
+		if ((find_return != 0) || *(needle) == '\0')
 		{
-			offset = i;
-			j = 0;
-			while (haystack[i + j] != '\0' && haystack[i + j] == needle[j] \
-				&& i + j < len)
-				j++;
-			if (j == ft_strlen(needle))
-				return ((char *)haystack + offset);
+			return (find_return);
 		}
-		i++;
 	}
 	return (0);
 }

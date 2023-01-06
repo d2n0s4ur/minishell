@@ -6,13 +6,13 @@
 /*   By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:24:00 by jnoh              #+#    #+#             */
-/*   Updated: 2022/03/08 21:46:22 by jnoh             ###   ########.fr       */
+/*   Updated: 2023/01/03 17:14:08 by jnoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*ret;
 	size_t	len1;

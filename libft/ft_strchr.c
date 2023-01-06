@@ -5,27 +5,31 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/07 16:29:23 by jnoh              #+#    #+#             */
-/*   Updated: 2022/08/08 13:17:13 by jnoh             ###   ########.fr       */
+/*   Created: 2022/03/07 15:46:09 by dongjlee          #+#    #+#             */
+/*   Updated: 2023/01/01 15:46:52 by jnoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
 char	*ft_strchr(const char *s, int c)
 {
-	size_t	i;
+	unsigned char			target;
+	int						i;
+	int						flag;
 
+	target = (unsigned char)c;
+	flag = 0;
 	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
+	while (flag != 1)
 	{
-		if (s[i] == (char)c)
-			return ((char *)(s + i));
+		if (s[i] == target)
+		{
+			return ((char *)s + i);
+		}
+		if (s[i] == '\0')
+		{
+			flag = 1;
+		}
 		i++;
 	}
-	if (s[i] == '\0' && (char)c == 0)
-		return ((char *)(s + i));
 	return (0);
 }

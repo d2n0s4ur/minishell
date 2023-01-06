@@ -3,30 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnoh <jnoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: dongjlee <dongjlee@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/07 16:19:20 by jnoh              #+#    #+#             */
-/*   Updated: 2022/03/12 14:31:44 by jnoh             ###   ########.fr       */
+/*   Created: 2022/03/07 15:31:11 by dongjlee          #+#    #+#             */
+/*   Updated: 2022/03/13 18:33:39 by dongjlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <unistd.h>
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+int	get_size_cpy(char *src)
+{
+	int	i;
+
+	i = 0;
+	while ((*(src + i) != '\0'))
+	{
+		i++;
+	}
+	return (i);
+}
+
+size_t	ft_strlcpy(char *dest, char *src, size_t size)
 {
 	size_t	i;
-	size_t	count;
 
-	count = ft_strlen(src);
 	i = 0;
-	if (dstsize != 0)
+	while ((*(src + i) != '\0') && (i + 1 < size))
 	{
-		while (src[i] != '\0' && i + 1 < dstsize)
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
+		*(dest + i) = *(src + i);
+		i++;
 	}
-	return (count);
+	if (size >= 1)
+	{
+		*(dest + i) = '\0';
+	}
+	return (get_size_cpy(src));
 }
